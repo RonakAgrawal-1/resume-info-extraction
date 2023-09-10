@@ -201,4 +201,53 @@ skills_keywords = [
 
 # Run the Streamlit app
 if __name__ == "__main__":
-    main()
+    st.set_page_config(
+        page_title="Resume Info Extractor",
+        page_icon=":page_with_curl:"
+    )
+    st.title("Welcome to the Resume Information Extractor!")
+    st.write("This tool helps you extract and analyze information from resumes.")
+    st.write("Follow these steps to get started:")
+    st.markdown("1. Upload a resume in PDF or DOC/DOCX format.")
+    st.markdown("2. Enter the job description.")
+    st.markdown("3. Click the 'Analyze' button to see the results.")
+
+    uploaded_file = st.file_uploader("Step 1: Upload Resume (PDF or DOC/DOCX)")
+    job_description_text = st.text_area("Step 2: Enter Job Description")
+
+    if st.button("Analyze"):
+        if not uploaded_file or not job_description_text:
+            st.warning("Please complete both steps to analyze.")
+        else:
+            with st.spinner("Analyzing..."):
+                resume_text = ""
+                if uploaded_file.type == "application/pdf":
+                    resume_text = extract_text_from_pdf(uploaded_file)
+                elif uploaded_file.type in ["application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document"]:
+                    resume_text = extract_text_from_docx(uploaded_file)
+                else:
+                    st.error("Unsupported file format. Please upload a PDF or DOC/DOCX file.")
+                    st.stop()
+
+                extracted_skills = extract_candidate_skills(resume_text)
+                score, common_skills = calculate_matching_score(extracted_skills, job_description_text)
+
+                st.title("Analysis Results")
+                st.subheader("Candidate Name")
+                candidate_name = extract_candidate_name(resume_text)
+                st.write(f"The candidate's name is: {candidate_name}")
+
+                st.subheader("Matching Score")
+                st.write(f"The matching score with the job description is: {score:.2%}")
+
+                st.subheader("Skills Extracted from Resume")
+                if extracted_skills:
+                    st.write(", ".join(extracted_skills))
+                else:
+                    st.warning("No skills found in the resume.")
+
+                st.subheader("Common Skills with Job Description")
+                if common_skills:
+                    st.write(", ".join(common_skills))
+                else:
+                    st.warning("No common skills found between the job description and the candidate's skills.")
