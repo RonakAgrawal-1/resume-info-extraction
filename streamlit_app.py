@@ -102,10 +102,26 @@ def extract_candidate_name(text):
 # Function to extract skills from the resume text
 def extract_candidate_skills(text):
     try:
-        skills = list(set([skill.lower().capitalize() for skill in skills_keywords if re.search(rf'\b{skill}\b', text, re.IGNORECASE)]))
-        return skills
+        # Convert the text to lowercase for case-insensitive matching
+        text = text.lower()
+
+        # Initialize an empty list to store the extracted skills
+        extracted_skills = []
+
+        # Iterate through the skills_keywords list and check if each keyword is present in the text
+        for skill in skills_keywords:
+            # Use regular expressions to find the keyword as a whole word (e.g., "python" as a whole word)
+            if re.search(rf'\b{skill.lower()}\b', text):
+                # Append the skill (in lowercase) to the extracted_skills list
+                extracted_skills.append(skill.lower())
+
+        # Convert the extracted skills to title case (e.g., "python" to "Python")
+        extracted_skills = [skill.capitalize() for skill in extracted_skills]
+
+        return extracted_skills
     except Exception as e:
         return {"error": str(e)}
+
 
 # Function to extract skills from the user-provided job description text
 def extract_job_description_skills(job_description_text):
