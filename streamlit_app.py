@@ -169,6 +169,7 @@ st.sidebar.subheader("Step 2: Enter Job Description")
 job_description_text = st.sidebar.text_area("Enter the job description")
 
 # Analyze Button in Sidebar
+# Inside the analyze button block
 if st.sidebar.button("Analyze"):
     if not uploaded_file or not job_description_text:
         st.warning("Please complete both steps to analyze.")
@@ -182,6 +183,10 @@ if st.sidebar.button("Analyze"):
             else:
                 st.error("Unsupported file format. Please upload a PDF or DOC/DOCX file.")
                 st.stop()
+
+            # Debug: Print the extracted resume text
+            st.text("Extracted Resume Text:")
+            st.text(resume_text)  # Add this line
 
             # Extract skills from the candidate's resume text
             extracted_skills = extract_candidate_skills(resume_text)
