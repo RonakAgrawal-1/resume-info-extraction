@@ -3,7 +3,7 @@ import re
 from PyPDF2 import PdfReader
 from io import BytesIO
 import docx2txt  # Add this import for DOC file support
-from .skills_keywords import skills_keywords
+from skills_keywords import skills_keywords
 
 # Function to extract text from a DOC file
 def extract_text_from_docx(uploaded_file):
