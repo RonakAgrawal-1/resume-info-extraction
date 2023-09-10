@@ -4,6 +4,12 @@ from PyPDF2 import PdfReader
 from io import BytesIO
 import docx2txt
 
+# Set Streamlit page title and icon
+st.set_page_config(
+    page_title="Resume Info Extractor",
+    page_icon=":page_with_curl:"
+)
+
 # Function to extract text from a DOC file
 def extract_text_from_docx(uploaded_file):
     try:
@@ -60,12 +66,6 @@ def calculate_matching_score(candidate_skills, job_description_text):
         score = 0.0
     
     return score, common_skills
-
-# Set Streamlit page title and icon
-st.set_page_config(
-    page_title="Resume Info Extractor",
-    page_icon=":page_with_curl:"
-)
 
 # Introduction Section
 st.title("Welcome to the Resume Information Extractor!")
@@ -201,10 +201,6 @@ skills_keywords = [
 
 # Run the Streamlit app
 if __name__ == "__main__":
-    st.set_page_config(
-        page_title="Resume Info Extractor",
-        page_icon=":page_with_curl:"
-    )
     st.title("Welcome to the Resume Information Extractor!")
     st.write("This tool helps you extract and analyze information from resumes.")
     st.write("Follow these steps to get started:")
